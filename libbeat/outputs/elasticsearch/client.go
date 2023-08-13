@@ -241,6 +241,7 @@ func (client *Client) publishEvents(ctx context.Context, data []publisher.Event)
 	if status != 200 {
 		failedEvents = data
 		stats.fails = len(failedEvents)
+		client.log.Error("Bulk index request err: %s", result)
 	} else {
 		failedEvents, stats = client.bulkCollectPublishFails(result, data)
 	}
