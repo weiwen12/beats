@@ -22,8 +22,6 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/dustin/go-humanize"
-
 	cfg "github.com/elastic/beats/v7/filebeat/config"
 	"github.com/elastic/beats/v7/filebeat/harvester"
 	"github.com/elastic/beats/v7/filebeat/input/file"
@@ -88,6 +86,7 @@ type LogConfig struct {
 	CloseRenamed  bool          `config:"close_renamed"`
 	CloseEOF      bool          `config:"close_eof"`
 	CloseTimeout  time.Duration `config:"close_timeout" validate:"min=0"`
+	RemoveEOF     bool          `config:"remove_eof"`
 }
 
 // Contains available scan options
@@ -146,6 +145,7 @@ func defaultConfig() config {
 			CloseRenamed:  false,
 			CloseEOF:      false,
 			CloseTimeout:  0,
+			RemoveEOF:     false,
 		},
 	}
 }

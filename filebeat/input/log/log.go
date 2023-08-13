@@ -128,7 +128,14 @@ func (f *Log) errorChecks(err error) error {
 		f.logger.Debugf("Source is not continuable: %s", f.fs.Name())
 		return err
 	}
-
+	if f.config.RemoveEOF {
+		errRemove := os.Remove(f.fs.Name())
+		if errRemove != nil {
+			f.logger.Errorf("remove file with EOF err: %v", errRemove)
+		} else {
+			f.logger.Infof("remove EOF file: %s", f.fs.Name())
+		}
+	}
 	if f.config.CloseEOF {
 		return err
 	}
