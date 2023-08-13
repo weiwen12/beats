@@ -29,6 +29,7 @@ type Stats struct {
 	events  *monitoring.Uint // total number of events processed by output
 
 	acked      *monitoring.Uint // total number of events ACKed by output
+	latency    *monitoring.Uint // total number of milliseconds output request
 	failed     *monitoring.Uint // total number of events failed in output
 	active     *monitoring.Uint // events sent and waiting for ACK/fail from output
 	duplicates *monitoring.Uint // events sent and waiting for ACK/fail from output
@@ -53,6 +54,7 @@ func NewStats(reg *monitoring.Registry) *Stats {
 		batches:    monitoring.NewUint(reg, "events.batches"),
 		events:     monitoring.NewUint(reg, "events.total"),
 		acked:      monitoring.NewUint(reg, "events.acked"),
+		latency:    monitoring.NewUint(reg, "events.latency"),
 		failed:     monitoring.NewUint(reg, "events.failed"),
 		dropped:    monitoring.NewUint(reg, "events.dropped"),
 		duplicates: monitoring.NewUint(reg, "events.duplicates"),
@@ -81,6 +83,13 @@ func (s *Stats) Acked(n int) {
 	if s != nil {
 		s.acked.Add(uint64(n))
 		s.active.Sub(uint64(n))
+	}
+}
+
+// Latency updates latency in total milliseconds
+func (s *Stats) Latency(n uint64) {
+	if s != nil {
+		s.latency.Add(n)
 	}
 }
 

@@ -22,6 +22,7 @@ package outputs
 type Observer interface {
 	NewBatch(int)     // report new batch being processed with number of events
 	Acked(int)        // report number of acked events
+	Latency(uint64)   // report number of latency in millisecond
 	Failed(int)       // report number of failed events
 	Dropped(int)      // report number of dropped events
 	Duplicate(int)    // report number of events detected as duplicates (e.g. on resends)
@@ -44,6 +45,7 @@ func NewNilObserver() Observer {
 
 func (*emptyObserver) NewBatch(int)     {}
 func (*emptyObserver) Acked(int)        {}
+func (*emptyObserver) Latency(uint64)   {}
 func (*emptyObserver) Duplicate(int)    {}
 func (*emptyObserver) Failed(int)       {}
 func (*emptyObserver) Dropped(int)      {}

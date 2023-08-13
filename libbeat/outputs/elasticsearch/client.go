@@ -219,6 +219,7 @@ func (client *Client) publishEvents(ctx context.Context, data []publisher.Event)
 		return nil, nil
 	}
 
+	begin := time.Now()
 	status, result, sendErr := client.conn.Bulk(ctx, "", "", nil, bulkItems)
 	if sendErr != nil {
 		err := apm.CaptureError(ctx, fmt.Errorf("failed to perform any bulk index operations: %w", sendErr))
@@ -226,6 +227,7 @@ func (client *Client) publishEvents(ctx context.Context, data []publisher.Event)
 		client.log.Error(err)
 		return data, sendErr
 	}
+	latency := time.Since(begin)
 	pubCount := len(data)
 	span.Context.SetLabel("events_published", pubCount)
 
@@ -251,6 +253,7 @@ func (client *Client) publishEvents(ctx context.Context, data []publisher.Event)
 		acked := len(data) - failed - dropped - duplicates
 
 		st.Acked(acked)
+		st.Latency(uint64(latency.Milliseconds()))
 		st.Failed(failed)
 		st.Dropped(dropped)
 		st.Duplicate(duplicates)

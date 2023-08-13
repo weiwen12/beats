@@ -144,6 +144,7 @@ func (c *client) Publish(_ context.Context, batch publisher.Batch) error {
 		batch:  batch,
 	}
 
+	begin := time.Now()
 	ch := c.producer.Input()
 	for i := range events {
 		d := &events[i]
@@ -159,6 +160,7 @@ func (c *client) Publish(_ context.Context, batch publisher.Batch) error {
 		msg.initProducerMessage()
 		ch <- &msg.msg
 	}
+	c.observer.Latency(uint64(time.Since(begin).Milliseconds()))
 
 	return nil
 }
