@@ -213,7 +213,7 @@ func (input *kafkaInput) runConsumerGroup(log *logp.Logger, client beat.Client, 
 
 	err := consumerGroup.Consume(context, input.config.Topics, handler)
 	if err != nil {
-		log.Errorw("Kafka consume error", "error", err)
+		log.Errorw("Kafka consume error", "error", err, "topics", input.config.Topics)
 	}
 }
 
