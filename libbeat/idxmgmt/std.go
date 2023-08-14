@@ -72,8 +72,8 @@ type componentType uint8
 
 //go:generate stringer -linecomment -type componentType
 const (
-	componentTemplate componentType = iota //template
-	componentILM                           //ilm
+	componentTemplate componentType = iota // template
+	componentILM                           // ilm
 )
 
 type feature struct {
@@ -194,12 +194,39 @@ func (s *indexSupport) BuildSelector(cfg *common.Config) (outputs.IndexSelector,
 	}
 
 	selCfg.SetString("index", -1, indexName)
+
+	caseSetting := outil.SelectorLowerCase
+	if cfg.HasField("selector_case") {
+		selectorCase, err := cfg.String("selector_case", -1)
+		if err != nil {
+			return nil, err
+		}
+
+		switch selectorCase {
+		case "lower":
+			caseSetting = outil.SelectorLowerCase
+		case "upper":
+			caseSetting = outil.SelectorUpperCase
+		case "keep":
+			caseSetting = outil.SelectorKeepCase
+		}
+	}
+
+	// setting: whether to exec selector recursively
+	if cfg.HasField("selector_recursion") {
+		recursive, err := cfg.Bool("selector_recursion", -1)
+		if err != nil {
+			return nil, err
+		}
+		selCfg.SetBool("selector_recursion", -1, recursive)
+	}
+
 	buildSettings := outil.Settings{
 		Key:              "index",
 		MultiKey:         "indices",
 		EnableSingleOnly: true,
 		FailEmpty:        mode != ilm.ModeEnabled,
-		Case:             outil.SelectorLowerCase,
+		Case:             caseSetting,
 	}
 
 	indexSel, err := outil.BuildSelectorFromConfig(selCfg, buildSettings)

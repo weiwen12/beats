@@ -65,6 +65,10 @@ type mapSelector struct {
 	to        map[string]string
 }
 
+type recursionSelector struct {
+	s SelectorExpr
+}
+
 var nilSelector SelectorExpr = &emptySelector{}
 
 // MakeSelector creates a selector from a set of selector expressions.
@@ -113,6 +117,15 @@ func BuildSelectorFromConfig(
 	multiKey := settings.MultiKey
 	found := false
 
+	var recursive bool
+	if cfg.HasField("selector_recursion") {
+		var err error
+		recursive, err = cfg.Bool("selector_recursion", -1)
+		if err != nil {
+			return Selector{}, err
+		}
+	}
+
 	if cfg.HasField(multiKey) {
 		found = true
 		sub, err := cfg.Child(multiKey, -1)
@@ -132,7 +145,11 @@ func BuildSelectorFromConfig(
 			}
 
 			if action != nilSelector {
-				sel = append(sel, action)
+				if recursive {
+					sel = append(sel, &recursionSelector{action})
+				} else {
+					sel = append(sel, action)
+				}
 			}
 		}
 	}
@@ -157,7 +174,11 @@ func BuildSelectorFromConfig(
 		}
 
 		if fmtsel != nilSelector {
-			sel = append(sel, fmtsel)
+			if recursive {
+				sel = append(sel, &recursionSelector{fmtsel})
+			} else {
+				sel = append(sel, fmtsel)
+			}
 		}
 	}
 
@@ -394,4 +415,38 @@ func (s *mapSelector) sel(evt *beat.Event) (string, error) {
 		return s.otherwise, nil
 	}
 	return n, nil
+}
+
+func (s *recursionSelector) sel(evt *beat.Event) (string, error) {
+	n, err := s.s.sel(evt)
+	if err != nil {
+		return "", err
+	}
+
+	for {
+		if n == "" {
+			return "", nil
+		}
+
+		fs, err := fmtstr.CompileEvent(n)
+		if err != nil {
+			return "", err
+		}
+		if fs.IsConst() {
+			return n, nil
+		}
+
+		fmtsel, err := FmtSelectorExpr(fs, "", SelectorKeepCase)
+		if err != nil {
+			return "", err
+		}
+		if fmtsel == nilSelector {
+			return n, nil
+		}
+
+		n, err = MakeSelector(fmtsel).Select(evt)
+		if err != nil {
+			return "", nil
+		}
+	}
 }
