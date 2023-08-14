@@ -1,0 +1,25 @@
+# 使用golang:1.21.0构建filebeat可执行文件
+FROM golang:1.21.0-alpine3.18 AS builder
+
+WORKDIR /go/src/github.com/elastic/beats
+
+# 拷贝源码
+COPY . .
+
+# 构建filebeat
+RUN go build -o ./filebeat/filebeat ./filebeat
+
+# 将可执行文件复制到docker.elastic.co/beats/filebeat:7.17.12镜像中
+FROM docker.elastic.co/beats/filebeat:7.17.12
+
+# 拷贝构建好的filebeat可执行文件
+COPY --from=builder /go/src/github.com/elastic/beats/filebeat/filebeat /usr/share/filebeat/filebeat
+
+# 设置工作目录
+WORKDIR /usr/share/filebeat
+
+# 暴露端口
+EXPOSE 5066
+
+CMD [ "filebeat", "-c", "/etc/filebeat/filebeat.yml"]
+
