@@ -19,8 +19,19 @@ package parse_filebeat_log
 
 // Config for parse_filebeat_log processor.
 type Config struct {
+	Field           string `config:"field"`            // log message field
+	TimeField       string `config:"time_field"`       // specified the time field
+	IgnoreMissing   bool   `config:"ignore_missing"`   // whether ignoring missing field case or not
+	IgnoreMalformed bool   `config:"ignore_malformed"` // whether ignore malformed log or not
+	DropOrigin      bool   `config:"drop_origin"`      // whether drop the origin field or not
 }
 
 func defaultConfig() Config {
-	return Config{}
+	return Config{
+		Field:           "message",
+		TimeField:       "logtime",
+		IgnoreMissing:   true,
+		IgnoreMalformed: true,
+		DropOrigin:      true,
+	}
 }

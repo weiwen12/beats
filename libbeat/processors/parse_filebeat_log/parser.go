@@ -24,11 +24,13 @@ import (
 
 	"github.com/elastic/beats/v7/libbeat/beat"
 	"github.com/elastic/beats/v7/libbeat/common"
+	"github.com/elastic/beats/v7/libbeat/logp"
 	"github.com/elastic/beats/v7/libbeat/processors"
 )
 
 const (
 	procName = "parse_filebeat_log"
+	logName  = "processor." + procName
 )
 
 func init() {
@@ -38,6 +40,7 @@ func init() {
 
 type parseFilebeatLog struct {
 	config Config
+	logger *logp.Logger
 }
 
 // New constructs a new fingerprint processor.
@@ -47,8 +50,11 @@ func New(cfg *common.Config) (processors.Processor, error) {
 		return nil, makeErrConfigUnpack(err)
 	}
 
+	log := logp.NewLogger(logName)
+
 	p := &parseFilebeatLog{
 		config: config,
+		logger: log,
 	}
 
 	return p, nil
@@ -56,21 +62,36 @@ func New(cfg *common.Config) (processors.Processor, error) {
 
 // Run parse filebeat's log
 func (p *parseFilebeatLog) Run(event *beat.Event) (*beat.Event, error) {
-	msg, err := event.GetValue("message.contents.content")
+	msg, err := event.GetValue(p.config.Field)
 	if err != nil {
-		return nil, makeErrMissingField("message.contents.content", err)
+		if p.config.IgnoreMissing {
+			return event, nil
+		}
+
+		return nil, makeErrMissingField(p.config.Field, err)
+	}
+
+	if p.config.DropOrigin {
+		err := event.Delete(p.config.Field)
+		if err != nil {
+			p.logger.Warnf("drop event field err: %v", err)
+		}
 	}
 
 	message, ok := msg.(string)
 	if !ok {
-		return nil, makeErrFieldType("message.contents.content", "string", fmt.Sprintf("%T", msg))
+		return nil, makeErrFieldType(p.config.Field, "string", fmt.Sprintf("%T", msg))
 	}
 
 	terms := strings.SplitN(message, "\t", 4)
 	if len(terms) != 4 {
+		if p.config.IgnoreMalformed {
+			return event, nil
+		}
+
 		return nil, makeErrLogFormat("[datetime]\t[LEVEL]\t[hostname]\t[message]")
 	}
-	_, err = event.PutValue("logtime", terms[0])
+	_, err = event.PutValue(p.config.TimeField, terms[0])
 	if err != nil {
 		return nil, makeErrComputeFingerprint(err)
 	}
