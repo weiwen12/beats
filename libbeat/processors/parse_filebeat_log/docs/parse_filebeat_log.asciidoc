@@ -1,0 +1,31 @@
+[[parse_filebeat_log]]
+=== Generate a parse_filebeat_log of an event
+
+++++
+<titleabbrev>parse_filebeat_log</titleabbrev>
+++++
+
+The `parse_filebeat_log` processor parse filebeat program's log
+the expected log format is: datetime	LEVEL	hostname	message
+
+[source,yaml]
+-----------------------------------------------------
+processors:
+  - decode_json_fields:
+      fields: ["message"]
+  - parse_filebeat_log:
+      with_hostname: true
+  - timestamp:
+     field: "logtime"
+     timezone: 'Asia/Shanghai'
+     ignore_missing: true
+     ignore_failure: true
+     layouts:
+       - '2006-01-02T15:04:05.000+0800'
+  - drop_fields:
+      fields: ["agent", "ecs", "host", "log", "input", "logtime", "metadata"]
+      ignore_missing: true
+-----------------------------------------------------
+
+The following settings are supported:
+
