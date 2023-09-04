@@ -15,11 +15,12 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package parse_filebeat_log
+package parse_vehicle_trace2trace
 
 import (
 	"encoding/json"
 	"fmt"
+	"regexp"
 	"strings"
 
 	"github.com/elastic/beats/v7/libbeat/beat"
@@ -29,8 +30,9 @@ import (
 )
 
 const (
-	procName = "parse_filebeat_log"
-	logName  = "processor." + procName
+	procName   = "parse_vehicle_trace2trace"
+	logName    = "processor." + procName
+	patternStr = "^(\\d{4}\\-\\d{2}\\-\\d{2}\\s\\d{2}:\\d{2}:\\d{2}\\.\\d{3})\\s+(\\d+)\\s+(\\d+)\\s+([a-zA-Z]+)\\s+(.*):\\s*##MSG##\\s*\\[(\\w*)\\]\\s*\\[(\\w*)\\]\\s*\\[(\\w*)\\]\\s*\\[([^\\[\\]]*)\\]\\s*\\[([^\\[\\]]*)\\]\\s+"
 )
 
 func init() {
@@ -39,11 +41,12 @@ func init() {
 }
 
 type parseFilebeatLog struct {
-	config Config
-	logger *logp.Logger
+	config  Config
+	logger  *logp.Logger
+	pattern *regexp.Regexp
 }
 
-// New constructs a new fingerprint processor.
+// New constructs a new parse_vehicle_trace2trace processor.
 func New(cfg *common.Config) (processors.Processor, error) {
 	config := defaultConfig()
 	if err := cfg.Unpack(&config); err != nil {
@@ -52,9 +55,14 @@ func New(cfg *common.Config) (processors.Processor, error) {
 
 	log := logp.NewLogger(logName)
 
+	pattern, err := regexp.Compile(patternStr)
+	if err != nil {
+		return nil, err
+	}
 	p := &parseFilebeatLog{
-		config: config,
-		logger: log,
+		config:  config,
+		logger:  log,
+		pattern: pattern,
 	}
 
 	return p, nil
@@ -79,6 +87,8 @@ func (p *parseFilebeatLog) Run(event *beat.Event) (*beat.Event, error) {
 			p.logger.Warnf("drop event field err: %v", err)
 		}
 	}
+
+	/* parse */
 
 	message, ok := msg.(string)
 	if !ok {
