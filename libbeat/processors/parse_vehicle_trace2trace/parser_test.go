@@ -18,104 +18,60 @@
 package parse_vehicle_trace2trace
 
 import (
-	"testing"
-	"time"
-
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
-
 	"github.com/elastic/beats/v7/libbeat/beat"
 	"github.com/elastic/beats/v7/libbeat/common"
+	"github.com/elastic/beats/v7/libbeat/logp"
+	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
-type ParseResult struct {
-	logtime  string
-	level    string
-	hostname string
-	message  string
-}
-
 var (
-	defaultMessage = "2023-08-31T12:14:43.594+0800\tINFO\tfilebeat-benchmark-log-dev-75c886ff7d-rx9sd\t[monitoring]\tlog/log.go:184\tNon-zero metrics in the last 30s"
+	defaultMessage = " {\"@timestamp\":\"2023-08-26T04:13:30.649Z\",\"@metadata\":{\"beat\":\"filebeat\",\"type\":\"_doc\",\"version\":\"7.9.3\"},\"log\":{\"offset\":126404,\"file\":{\"path\":\"/vlog/cdc/20230826120955_763.log.gz.1695288295082205184@cdc@b974519299bfa3e1faf92e611331aa08@tracelog@1693023196000@1693023204332\"},\"flags\":[\"multiline\"]},\"message\":\"2023-08-26 12:11:47.898 4664 24435 DEBUG com.jidu.media.service:MediaService@MediaService@HttpLogInterceptor:##MSG## [6d3e1573c45f07a1c60c6be4aeb3d2a0] [789f9212a72f683f] [] [5g] [441018276115528658] response url: https://vehiclesvc.jiduapp.cn/api/cpsp/xmly/history/record/album, Response Time-->：2023-08-26 12:11:47 897\\nTraceParent-->：00-6d3e1573c45f07a1c60c6be4aeb3d2a0-789f9212a72f683f-01\\nResponse Result  -->：{\\\"code\\\":0,\\\"msg\\\":\\\"Success\\\",\\\"showMsg\\\":\\\"\\\"} ##MSG##\",\"fields\":{\"servicetype\":\"tracelogcdc\"}}"
 )
 
 func TestWithConfig(t *testing.T) {
-	cases := map[string]struct {
-		config common.MapStr
-		input  common.MapStr
-		want   ParseResult
-	}{
-		"default config": {
-			config: common.MapStr{},
-			input: common.MapStr{
-				"message": defaultMessage,
-			},
-			want: ParseResult{
-				logtime:  "2023-08-31T12:14:43.594+0800",
-				level:    "INFO",
-				hostname: "filebeat-benchmark-log-dev-75c886ff7d-rx9sd",
-				message:  "[monitoring]\tlog/log.go:184\tNon-zero metrics in the last 30s",
-			},
-		},
-		"specified message field": {
-			config: common.MapStr{
-				"field": "custom_message",
-			},
-			input: common.MapStr{
-				"custom_message": defaultMessage,
-			},
-			want: ParseResult{
-				logtime:  "2023-08-31T12:14:43.594+0800",
-				level:    "INFO",
-				hostname: "filebeat-benchmark-log-dev-75c886ff7d-rx9sd",
-				message:  "[monitoring]\tlog/log.go:184\tNon-zero metrics in the last 30s",
-			},
-		},
-		"specified time field": {
-			config: common.MapStr{
-				"time_field": "custom_time",
-			},
-			input: common.MapStr{
-				"message": defaultMessage,
-			},
-			want: ParseResult{
-				logtime:  "2023-08-31T12:14:43.594+0800",
-				level:    "INFO",
-				hostname: "filebeat-benchmark-log-dev-75c886ff7d-rx9sd",
-				message:  "[monitoring]\tlog/log.go:184\tNon-zero metrics in the last 30s",
-			},
-		},
+	input := common.MapStr{
+		"message": defaultMessage,
 	}
-
-	for name, test := range cases {
-		t.Run(name, func(t *testing.T) {
-			config := common.MustNewConfigFrom(test.config)
-			p, err := New(config)
-			require.NoError(t, err)
-
-			testEvent := &beat.Event{
-				Timestamp: time.Unix(1693463968, 0),
-				Fields:    test.input.Clone(),
-			}
-			newEvent, err := p.Run(testEvent)
-			require.NoError(t, err)
-
-			processor := p.(*parseFilebeatLog)
-
-			fieldEqual(t, newEvent, processor.config.TimeField, test.want.logtime)
-			fieldEqual(t, newEvent, "level", test.want.level)
-			fieldEqual(t, newEvent, "hostname", test.want.hostname)
-			fieldEqual(t, newEvent, "message", test.want.message)
-		})
+	testConfig, _ := common.NewConfigFrom(map[string]interface{}{
+		"Field":           "message",
+		"TimeField":       "logtime",
+		"IgnoreMissing":   true,
+		"IgnoreMalformed": true,
+		"DropOrigin":      true,
+	})
+	actual := getActualValue(t, testConfig, input)
+	expected := common.MapStr{
+		"header_filename":    "20230826120955_763.log.gz",
+		"header_ecu":         "cdc",
+		"header_vid":         "b974519299bfa3e1faf92e611331aa08",
+		"header_log_type":    "tracelog",
+		"header_created_at":  "1693023196000",
+		"header_uploaded_at": "1693023204332",
+		"time":               "2023-08-26 12:11:47.898",
+		"pid":                4664,
+		"tid":                24435,
+		"level":              "DEBUG",
+		"tag":                "com.jidu.media.service:MediaService@MediaService@HttpLogInterceptor",
+		"trace_id":           "6d3e1573c45f07a1c60c6be4aeb3d2a0",
+		"span_id":            "789f9212a72f683f",
+		"parent_span_id":     "",
+		"network":            "5g",
+		"user_id":            "441018276115528658",
+		"message":            "response url: https://vehiclesvc.jiduapp.cn/api/cpsp/xmly/history/record/album, Response Time-->：2023-08-26 12:11:47 897\nTraceParent-->：00-6d3e1573c45f07a1c60c6be4aeb3d2a0-789f9212a72f683f-01\nResponse Result  -->：{\"code\":0,\"msg\":\"Success\",\"showMsg\":\"\"}",
 	}
+	assert.Equal(t, expected.String(), actual.String())
 }
 
-func fieldEqual(t *testing.T, event *beat.Event, field string, expected interface{}) {
-	value, err := event.GetValue(field)
+func getActualValue(t *testing.T, config *common.Config, input common.MapStr) common.MapStr {
+	log := logp.NewLogger("parse_vehicle_trace2trace_test")
+
+	p, err := NewParseVehicleTrace2trace(config)
 	if err != nil {
-		t.Error(err)
-		return
+		log.Error("Error initializing decode_json_fields")
+		t.Fatal(err)
 	}
 
-	assert.Equal(t, expected, value)
+	actual, _ := p.Run(&beat.Event{Fields: input})
+	return actual.Fields
 }

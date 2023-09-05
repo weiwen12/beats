@@ -524,3 +524,29 @@ func getActualValue(t *testing.T, config *common.Config, input common.MapStr) co
 	actual, _ := p.Run(&beat.Event{Fields: input})
 	return actual.Fields
 }
+
+func TestOwn(t *testing.T) {
+	input := common.MapStr{
+		"msg":      "{\"log\":\"{\\\"level\\\":\\\"info\\\"}\",\"stream\":\"stderr\",\"count\":3}",
+		"pipeline": "es1",
+	}
+
+	testConfig, _ = common.NewConfigFrom(map[string]interface{}{
+		"fields":        [1]string{"msg"},
+		"process_array": true,
+		"max_depth":     2,
+	})
+
+	actual := getActualValue(t, testConfig, input)
+
+	expected := common.MapStr{
+		"msg": map[string]interface{}{
+			"log": map[string]interface{}{
+				"level": "info",
+			},
+			"stream": "stderr",
+		},
+		"pipeline": "us1",
+	}
+	assert.Equal(t, expected.String(), actual.String())
+}
