@@ -7,7 +7,7 @@ WORKDIR /go/src/github.com/elastic/beats
 COPY . .
 
 # 构建filebeat
-RUN go build -o ./filebeat/filebeat ./filebeat
+RUN GOPROXY="https://goproxy.cn,direct" go build -o ./filebeat/filebeat ./filebeat
 
 # 将可执行文件复制到docker.elastic.co/beats/filebeat:7.17.12镜像中
 FROM docker.elastic.co/beats/filebeat:7.17.12
