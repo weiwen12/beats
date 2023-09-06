@@ -57,7 +57,7 @@ type parseVehicleTrace2trace struct {
 	pattern *regexp.Regexp
 }
 
-// New constructs a new parse_vehicle_trace2trace processor.
+// NewParseVehicleTrace2trace constructs a new parse_vehicle_trace2trace processor.
 func NewParseVehicleTrace2trace(cfg *common.Config) (processors.Processor, error) {
 	config := defaultConfig()
 	if err := cfg.Unpack(&config); err != nil {
