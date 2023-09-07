@@ -206,10 +206,15 @@ func (p *parseVehicleTrace2trace) Run(event *beat.Event) (*beat.Event, error) {
 		if err != nil {
 			return nil, makeErrComputeFingerprint(err)
 		}
-		_, err = event.PutValue("message", msgStr[len(lists[0]):strings.LastIndex(msgStr, "##MSG##")])
+		if endIdx := strings.LastIndex(msgStr, "##MSG##"); endIdx > len(lists[0]) {
+			_, err = event.PutValue("message", msgStr[len(lists[0]):endIdx])
+		} else {
+			_, err = event.PutValue("message", msgStr[len(lists[0]):])
+		}
 		if err != nil {
 			return nil, makeErrComputeFingerprint(err)
 		}
+
 	}
 
 	return event, nil
