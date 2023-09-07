@@ -15,7 +15,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package parse_vehicle_trace2trace
+package parse_common
 
 import (
 	"encoding/json"
@@ -152,13 +152,7 @@ func (p *parseVehicleTrace2trace) Run(event *beat.Event) (*beat.Event, error) {
 
 	}
 	msgStr := msg.(string)
-
-	_, err = event.PutValue("message", msgStr)
-	if err != nil {
-		return nil, makeErrComputeFingerprint(err)
-	}
 	lists := p.pattern.FindStringSubmatch(msgStr)
-
 	if len(lists) >= 11 && len(lists[6]) > 0 {
 		_, err = event.PutValue("time", lists[1])
 		if err != nil {
@@ -168,7 +162,6 @@ func (p *parseVehicleTrace2trace) Run(event *beat.Event) (*beat.Event, error) {
 		if err != nil {
 			pid = 0
 		}
-
 		_, err = event.PutValue("pid", pid)
 		if err != nil {
 			return nil, makeErrComputeFingerprint(err)
