@@ -966,6 +966,7 @@ github.com/urso/sderr v0.0.0-20210525210834-52b04e8f5c71/go.mod h1:Wp40HwmjM59Fk
 github.com/vbatts/tar-split v0.11.1/go.mod h1:LEuURwDEiWjRjwu46yU3KVGuUdVv/dcnpcEPSzR8z6g=
 github.com/vmware/govmomi v0.0.0-20170802214208-2cad15190b41 h1:NeNpIvfvaFOh0BH7nMEljE5Rk/VJlxhm58M41SeOD20=
 github.com/vmware/govmomi v0.0.0-20170802214208-2cad15190b41/go.mod h1:URlwyTFZX72RmxtxuaFL2Uj3fD1JTvZdx59bHWk6aFU=
+github.com/weiwen12/sarama v1.29.2 h1:iOUigenXyygstkOJRpfDwyPyMIF9EuX/tyIdJyogvUg=
 github.com/weiwen12/sarama v1.29.2/go.mod h1:mdtqvCSg8JOxk8PmpTNGyo6wzd4BMm4QXSfDnTXmgkE=
 github.com/xdg/scram v1.0.3 h1:nTadYh2Fs4BK2xdldEa2g5bbaZp0/+1nJMMPtPxS/to=
 github.com/xdg/scram v1.0.3/go.mod h1:lB8K/P019DLNhemzwFU4jHLhdvlE6uDZjXFejJXr49I=
