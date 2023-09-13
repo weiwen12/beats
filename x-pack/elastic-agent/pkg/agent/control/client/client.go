@@ -6,8 +6,8 @@ package client
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 
 	"sync"
 	"time"

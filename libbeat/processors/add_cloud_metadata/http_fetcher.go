@@ -20,7 +20,7 @@ package add_cloud_metadata
 import (
 	"bytes"
 	"context"
-	"encoding/json"
+	"github.com/goccy/go-json"
 	"io/ioutil"
 	"net/http"
 

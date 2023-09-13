@@ -19,8 +19,8 @@ package common
 
 import (
 	"encoding/binary"
-	"encoding/json"
 	"errors"
+	"github.com/goccy/go-json"
 	"hash"
 	"time"
 )

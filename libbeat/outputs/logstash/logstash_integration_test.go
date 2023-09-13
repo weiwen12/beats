@@ -22,8 +22,8 @@ package logstash
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"os"
 	"sync"
 	"testing"

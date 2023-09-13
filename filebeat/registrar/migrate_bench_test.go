@@ -21,9 +21,9 @@
 package registrar
 
 import (
-	"encoding/json"
 	"flag"
 	"fmt"
+	"github.com/goccy/go-json"
 	"io/ioutil"
 	"os"
 	"path/filepath"

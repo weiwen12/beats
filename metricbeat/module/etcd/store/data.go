@@ -18,9 +18,8 @@
 package store
 
 import (
-	"encoding/json"
-
 	"github.com/elastic/beats/v7/libbeat/common"
+	"github.com/goccy/go-json"
 
 	s "github.com/elastic/beats/v7/libbeat/common/schema"
 	c "github.com/elastic/beats/v7/libbeat/common/schema/mapstriface"

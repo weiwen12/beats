@@ -6,8 +6,8 @@ package pipelinemanager
 
 import (
 	"crypto/sha1"
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"io"
 	"os"
 	"sort"

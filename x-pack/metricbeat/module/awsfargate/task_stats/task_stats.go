@@ -5,8 +5,8 @@
 package task_stats
 
 import (
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"io/ioutil"
 	"net/http"
 	"os"

@@ -9,7 +9,7 @@ package pkg
 
 import (
 	"bufio"
-	"encoding/json"
+	"github.com/goccy/go-json"
 	"io/ioutil"
 	"os"
 	"path"

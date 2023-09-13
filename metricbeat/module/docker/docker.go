@@ -22,7 +22,7 @@ package docker
 
 import (
 	"context"
-	"encoding/json"
+	"github.com/goccy/go-json"
 	"net/http"
 	"sync"
 	"time"

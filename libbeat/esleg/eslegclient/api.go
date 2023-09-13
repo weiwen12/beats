@@ -18,8 +18,8 @@
 package eslegclient
 
 import (
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"strconv"
 
 	"github.com/pkg/errors"

@@ -5,8 +5,8 @@
 package capabilities
 
 import (
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 
 	"gopkg.in/yaml.v2"
 )

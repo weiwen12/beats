@@ -5,8 +5,8 @@
 package fleetapi
 
 import (
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"strings"
 
 	"github.com/mitchellh/mapstructure"

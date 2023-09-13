@@ -18,9 +18,8 @@
 package self
 
 import (
-	"encoding/json"
-
 	"github.com/elastic/beats/v7/libbeat/common"
+	"github.com/goccy/go-json"
 )
 
 type LeaderInfo struct {

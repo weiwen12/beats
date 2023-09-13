@@ -20,10 +20,10 @@ package instance
 import (
 	"context"
 	cryptRand "crypto/rand"
-	"encoding/json"
 	"errors"
 	"flag"
 	"fmt"
+	"github.com/goccy/go-json"
 	"io"
 	"math"
 	"math/big"

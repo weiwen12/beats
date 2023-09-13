@@ -7,8 +7,8 @@ package awss3
 import (
 	"context"
 	"crypto/sha256"
-	"encoding/json"
 	"errors"
+	"github.com/goccy/go-json"
 	"testing"
 	"time"
 

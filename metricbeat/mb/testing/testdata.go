@@ -18,7 +18,7 @@
 package testing
 
 import (
-	"encoding/json"
+	"github.com/goccy/go-json"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"

@@ -18,8 +18,8 @@
 package elasticsearch
 
 import (
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"net/url"
 	"strconv"
 	"strings"

@@ -19,8 +19,8 @@ package kibana
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"io/ioutil"
 	"os"
 	"strings"

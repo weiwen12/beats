@@ -21,8 +21,8 @@
 package xml
 
 import (
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"os"
 	"strings"
 	"testing"

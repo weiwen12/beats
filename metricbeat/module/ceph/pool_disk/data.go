@@ -18,10 +18,9 @@
 package pool_disk
 
 import (
-	"encoding/json"
-
 	"github.com/elastic/beats/v7/libbeat/common"
 	"github.com/elastic/beats/v7/libbeat/logp"
+	"github.com/goccy/go-json"
 )
 
 // Stats represents the statistics for a pool

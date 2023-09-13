@@ -18,8 +18,8 @@
 package module
 
 import (
-	"encoding/json"
 	"errors"
+	"github.com/goccy/go-json"
 	"time"
 
 	"github.com/elastic/beats/v7/libbeat/beat"

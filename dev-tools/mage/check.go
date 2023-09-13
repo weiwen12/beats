@@ -20,8 +20,8 @@ package mage
 import (
 	"bufio"
 	"bytes"
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"io/ioutil"
 	"log"
 	"os"

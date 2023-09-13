@@ -7,8 +7,8 @@ package synthexec
 import (
 	"bufio"
 	"context"
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"io"
 	"os"
 	"os/exec"

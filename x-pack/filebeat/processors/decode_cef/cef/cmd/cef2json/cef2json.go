@@ -7,9 +7,9 @@ package main
 import (
 	"bufio"
 	"bytes"
-	"encoding/json"
 	"flag"
 	"fmt"
+	"github.com/goccy/go-json"
 	"log"
 	"os"
 

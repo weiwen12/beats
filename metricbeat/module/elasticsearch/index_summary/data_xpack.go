@@ -18,8 +18,8 @@
 package index_summary
 
 import (
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"time"
 
 	"github.com/pkg/errors"

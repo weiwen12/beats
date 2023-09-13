@@ -18,10 +18,9 @@
 package bucket
 
 import (
-	"encoding/json"
-
 	"github.com/elastic/beats/v7/libbeat/common"
 	"github.com/elastic/beats/v7/libbeat/logp"
+	"github.com/goccy/go-json"
 )
 
 type BucketQuota struct {

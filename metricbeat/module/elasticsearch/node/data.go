@@ -18,8 +18,7 @@
 package node
 
 import (
-	"encoding/json"
-
+	"github.com/goccy/go-json"
 	"github.com/joeshaw/multierror"
 	"github.com/pkg/errors"
 

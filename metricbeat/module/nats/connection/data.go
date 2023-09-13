@@ -18,7 +18,7 @@
 package connection
 
 import (
-	"encoding/json"
+	"github.com/goccy/go-json"
 	"time"
 
 	"github.com/pkg/errors"

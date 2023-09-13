@@ -18,9 +18,8 @@
 package jsontransform
 
 import (
-	"encoding/json"
-
 	"github.com/elastic/beats/v7/libbeat/common"
+	"github.com/goccy/go-json"
 )
 
 // TransformNumbers walks a json decoded tree an replaces json.Number

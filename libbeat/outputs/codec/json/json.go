@@ -19,13 +19,12 @@ package json
 
 import (
 	"bytes"
-	stdjson "encoding/json"
-
 	"github.com/elastic/beats/v7/libbeat/beat"
 	"github.com/elastic/beats/v7/libbeat/common"
 	"github.com/elastic/beats/v7/libbeat/outputs/codec"
 	"github.com/elastic/go-structform/gotype"
 	"github.com/elastic/go-structform/json"
+	stdjson "github.com/goccy/go-json"
 )
 
 // Encoder for serializing a beat.Event to json.

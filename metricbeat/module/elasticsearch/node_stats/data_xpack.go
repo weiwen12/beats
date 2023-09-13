@@ -18,8 +18,7 @@
 package node_stats
 
 import (
-	"encoding/json"
-
+	"github.com/goccy/go-json"
 	"time"
 
 	"github.com/joeshaw/multierror"

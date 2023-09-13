@@ -19,8 +19,8 @@ package common
 
 import (
 	"encoding"
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"reflect"
 	"strconv"
 	"strings"

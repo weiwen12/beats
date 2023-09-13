@@ -18,7 +18,7 @@
 package json
 
 import (
-	"encoding/json"
+	"github.com/goccy/go-json"
 	"io/ioutil"
 
 	"github.com/pkg/errors"

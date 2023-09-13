@@ -21,9 +21,9 @@ package fileset
 
 import (
 	"bytes"
-	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/goccy/go-json"
 	"io/ioutil"
 	"os"
 	"path/filepath"

@@ -5,8 +5,8 @@
 package stats
 
 import (
-	"encoding/json"
 	"errors"
+	"github.com/goccy/go-json"
 
 	"github.com/elastic/beats/v7/libbeat/common"
 	s "github.com/elastic/beats/v7/libbeat/common/schema"

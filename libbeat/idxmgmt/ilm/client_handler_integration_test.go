@@ -21,8 +21,8 @@
 package ilm_test
 
 import (
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"os"
 	"testing"
 	"time"

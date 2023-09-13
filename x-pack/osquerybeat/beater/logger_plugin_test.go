@@ -6,7 +6,7 @@ package beater
 
 import (
 	"context"
-	"encoding/json"
+	"github.com/goccy/go-json"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"

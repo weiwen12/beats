@@ -6,8 +6,7 @@ package beater
 
 import (
 	"context"
-	"encoding/json"
-
+	"github.com/goccy/go-json"
 	"github.com/osquery/osquery-go/plugin/logger"
 
 	"github.com/elastic/beats/v7/libbeat/logp"

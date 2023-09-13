@@ -71,8 +71,8 @@ Note that this allows for converting, renaming, and restructuring the data.
 package mapstriface
 
 import (
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"time"
 
 	"github.com/joeshaw/multierror"

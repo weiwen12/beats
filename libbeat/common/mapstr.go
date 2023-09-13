@@ -18,8 +18,8 @@
 package common
 
 import (
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"io"
 	"sort"
 	"strings"

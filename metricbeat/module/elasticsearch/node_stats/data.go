@@ -18,8 +18,8 @@
 package node_stats
 
 import (
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 
 	"github.com/elastic/beats/v7/metricbeat/helper/elastic"
 

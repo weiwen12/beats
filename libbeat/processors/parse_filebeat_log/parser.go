@@ -18,8 +18,8 @@
 package parse_filebeat_log
 
 import (
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"strings"
 
 	"github.com/elastic/beats/v7/libbeat/beat"

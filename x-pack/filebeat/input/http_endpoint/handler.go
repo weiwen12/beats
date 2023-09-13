@@ -6,7 +6,7 @@ package http_endpoint
 
 import (
 	"bytes"
-	"encoding/json"
+	"github.com/goccy/go-json"
 	"io"
 	"net/http"
 	"time"

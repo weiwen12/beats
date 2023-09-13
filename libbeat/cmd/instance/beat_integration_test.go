@@ -18,8 +18,8 @@
 package instance_test
 
 import (
-	"encoding/json"
 	"flag"
+	"github.com/goccy/go-json"
 	"net/http"
 	"sync"
 	"testing"

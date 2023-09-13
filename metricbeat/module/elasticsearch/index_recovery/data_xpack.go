@@ -18,8 +18,8 @@
 package index_recovery
 
 import (
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"time"
 
 	"github.com/pkg/errors"

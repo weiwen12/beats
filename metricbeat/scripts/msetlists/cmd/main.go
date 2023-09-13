@@ -18,8 +18,8 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"os"
 
 	"github.com/elastic/beats/v7/libbeat/paths"

@@ -6,8 +6,8 @@ package azureeventhub
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"strings"
 	"sync"
 	"time"

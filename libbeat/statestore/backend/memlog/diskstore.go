@@ -19,8 +19,8 @@ package memlog
 
 import (
 	"bufio"
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"io/ioutil"
 	"os"
 	"path/filepath"

@@ -18,7 +18,7 @@
 package node_stats
 
 import (
-	"encoding/json"
+	"github.com/goccy/go-json"
 	"time"
 
 	"github.com/elastic/beats/v7/metricbeat/module/logstash"

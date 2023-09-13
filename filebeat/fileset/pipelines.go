@@ -18,8 +18,8 @@
 package fileset
 
 import (
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"strings"
 
 	"github.com/joeshaw/multierror"

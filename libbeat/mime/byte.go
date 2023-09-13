@@ -18,8 +18,8 @@
 package mime
 
 import (
-	"encoding/json"
 	"encoding/xml"
+	"github.com/goccy/go-json"
 	"net/http"
 	"strings"
 

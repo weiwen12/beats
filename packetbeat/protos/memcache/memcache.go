@@ -20,7 +20,7 @@ package memcache
 // Memcache plugin initialization, message/transaction types and transaction initialization/publishing.
 
 import (
-	"encoding/json"
+	"github.com/goccy/go-json"
 	"math"
 	"strings"
 	"time"

@@ -6,8 +6,8 @@ package v2
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"net"
 	"net/http"
 	"net/url"

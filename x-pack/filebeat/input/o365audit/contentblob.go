@@ -5,8 +5,8 @@
 package o365audit
 
 import (
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"net/http"
 	"time"
 

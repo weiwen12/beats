@@ -5,8 +5,8 @@
 package module
 
 import (
-	"encoding/json"
 	"flag"
+	"github.com/goccy/go-json"
 	"io"
 	"io/ioutil"
 	"os"

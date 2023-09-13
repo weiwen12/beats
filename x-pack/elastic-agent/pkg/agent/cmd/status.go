@@ -6,8 +6,8 @@ package cmd
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"io"
 	"os"
 	"text/tabwriter"

@@ -18,8 +18,8 @@
 package builder
 
 import (
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"sort"
 	"strconv"
 	"strings"

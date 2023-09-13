@@ -18,9 +18,9 @@
 package auditd
 
 import (
-	"encoding/json"
 	"flag"
 	"fmt"
+	"github.com/goccy/go-json"
 	"io/ioutil"
 	"os"
 	"os/exec"

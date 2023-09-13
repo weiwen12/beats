@@ -6,8 +6,8 @@ package remote
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"io/ioutil"
 	"net/http"
 	"strings"

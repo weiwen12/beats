@@ -5,8 +5,7 @@
 package channels
 
 import (
-	"encoding/json"
-
+	"github.com/goccy/go-json"
 	"github.com/pkg/errors"
 
 	s "github.com/elastic/beats/v7/libbeat/common/schema"

@@ -18,8 +18,8 @@
 package flows
 
 import (
-	"encoding/json"
 	"flag"
+	"github.com/goccy/go-json"
 	"io/ioutil"
 	"testing"
 	"time"

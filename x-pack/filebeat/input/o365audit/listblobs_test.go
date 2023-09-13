@@ -6,8 +6,8 @@ package o365audit
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"io/ioutil"
 	"net/http"
 	"sort"

@@ -6,7 +6,7 @@ package application
 
 import (
 	"context"
-	"encoding/json"
+	"github.com/goccy/go-json"
 	"testing"
 
 	"github.com/elastic/beats/v7/x-pack/elastic-agent/pkg/agent/configuration"

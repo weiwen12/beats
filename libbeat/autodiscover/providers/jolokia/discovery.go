@@ -18,7 +18,7 @@
 package jolokia
 
 import (
-	"encoding/json"
+	"github.com/goccy/go-json"
 	"net"
 	"strings"
 	"sync"

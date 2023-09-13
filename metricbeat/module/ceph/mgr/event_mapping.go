@@ -18,8 +18,8 @@
 package mgr
 
 import (
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 
 	"github.com/pkg/errors"
 )

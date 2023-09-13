@@ -18,7 +18,7 @@
 package mgr_cluster_health
 
 import (
-	"encoding/json"
+	"github.com/goccy/go-json"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"

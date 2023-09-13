@@ -7,8 +7,8 @@ package fleetapi
 import (
 	"bytes"
 	"context"
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"io/ioutil"
 	"net/http"
 	"time"

@@ -4,7 +4,7 @@
 
 package testing
 
-import "encoding/json"
+import "github.com/goccy/go-json"
 
 // CloneMap clones the source and returns a deep copy of the source.
 func CloneMap(source map[string]interface{}) (map[string]interface{}, error) {

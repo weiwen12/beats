@@ -21,8 +21,8 @@
 package module_test
 
 import (
-	stdjson "encoding/json"
 	"fmt"
+	stdjson "github.com/goccy/go-json"
 	"sync"
 	"time"
 

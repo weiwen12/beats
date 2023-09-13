@@ -6,10 +6,9 @@ package config
 
 import (
 	"context"
-	"encoding/json"
-
 	"github.com/elastic/beats/v7/libbeat/common/reload"
 	"github.com/elastic/beats/v7/libbeat/logp"
+	"github.com/goccy/go-json"
 )
 
 type reloader struct {

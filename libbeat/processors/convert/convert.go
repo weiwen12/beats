@@ -18,8 +18,8 @@
 package convert
 
 import (
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"net"
 	"strconv"
 	"strings"

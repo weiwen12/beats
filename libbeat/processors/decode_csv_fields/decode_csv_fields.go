@@ -19,8 +19,8 @@ package decode_csv_fields
 
 import (
 	"encoding/csv"
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"strings"
 
 	"github.com/pkg/errors"

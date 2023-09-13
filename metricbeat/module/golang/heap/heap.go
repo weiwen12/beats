@@ -18,8 +18,7 @@
 package heap
 
 import (
-	"encoding/json"
-
+	"github.com/goccy/go-json"
 	"github.com/pkg/errors"
 
 	"github.com/elastic/beats/v7/libbeat/logp"

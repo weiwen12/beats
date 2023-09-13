@@ -18,8 +18,8 @@
 package logstash
 
 import (
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"net/url"
 
 	"github.com/pkg/errors"

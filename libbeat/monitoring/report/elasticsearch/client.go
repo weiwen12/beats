@@ -19,8 +19,8 @@ package elasticsearch
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"net/http"
 	"time"
 

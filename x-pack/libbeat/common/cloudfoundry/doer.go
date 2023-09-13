@@ -5,8 +5,8 @@
 package cloudfoundry
 
 import (
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"net/http"
 	"net/url"
 	"strconv"

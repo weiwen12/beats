@@ -18,10 +18,10 @@
 package common
 
 import (
-	"encoding/json"
 	"errors"
 	"flag"
 	"fmt"
+	"github.com/goccy/go-json"
 	"os"
 	"path/filepath"
 	"runtime"

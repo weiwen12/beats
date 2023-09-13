@@ -6,8 +6,8 @@ package awss3
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"net/url"
 	"strconv"
 	"strings"

@@ -18,7 +18,7 @@
 package osd_tree
 
 import (
-	"encoding/json"
+	"github.com/goccy/go-json"
 	"strconv"
 	"strings"
 

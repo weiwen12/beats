@@ -18,8 +18,8 @@
 package mongodb
 
 import (
-	"encoding/json"
 	"errors"
+	"github.com/goccy/go-json"
 	"strings"
 	"sync"
 

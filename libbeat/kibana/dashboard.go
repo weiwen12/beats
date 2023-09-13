@@ -20,8 +20,8 @@ package kibana
 import (
 	"bufio"
 	"bytes"
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"io"
 
 	"github.com/elastic/beats/v7/libbeat/common"

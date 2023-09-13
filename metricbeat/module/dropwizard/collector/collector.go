@@ -18,7 +18,7 @@
 package collector
 
 import (
-	"encoding/json"
+	"github.com/goccy/go-json"
 	"strings"
 
 	"github.com/elastic/beats/v7/metricbeat/helper"

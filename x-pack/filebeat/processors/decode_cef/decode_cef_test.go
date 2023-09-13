@@ -6,8 +6,8 @@ package decode_cef
 
 import (
 	"bufio"
-	"encoding/json"
 	"flag"
+	"github.com/goccy/go-json"
 	"os"
 	"reflect"
 	"testing"

@@ -18,8 +18,8 @@
 package winevent
 
 import (
-	"encoding/json"
 	"encoding/xml"
+	"github.com/goccy/go-json"
 	"strings"
 	"testing"
 	"time"

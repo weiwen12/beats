@@ -5,8 +5,8 @@
 package http_endpoint
 
 import (
-	"encoding/json"
 	"errors"
+	"github.com/goccy/go-json"
 	"net/textproto"
 
 	"github.com/elastic/beats/v7/libbeat/common/transport/tlscommon"

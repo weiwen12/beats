@@ -6,9 +6,9 @@ package aws
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/goccy/go-json"
 	"regexp"
 	"strconv"
 

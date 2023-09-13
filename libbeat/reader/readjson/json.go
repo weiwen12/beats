@@ -19,8 +19,8 @@ package readjson
 
 import (
 	"bytes"
-	gojson "encoding/json"
 	"fmt"
+	gojson "github.com/goccy/go-json"
 	"time"
 
 	"github.com/elastic/beats/v7/libbeat/beat"

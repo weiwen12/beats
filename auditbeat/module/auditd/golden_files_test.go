@@ -23,8 +23,8 @@ package auditd
 import (
 	"bufio"
 	"context"
-	"encoding/json"
 	"flag"
+	"github.com/goccy/go-json"
 	"io/ioutil"
 	"os"
 	"os/user"

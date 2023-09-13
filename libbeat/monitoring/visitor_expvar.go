@@ -18,8 +18,8 @@
 package monitoring
 
 import (
-	"encoding/json"
 	"expvar"
+	"github.com/goccy/go-json"
 	"strconv"
 )
 

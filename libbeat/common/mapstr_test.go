@@ -21,8 +21,8 @@
 package common
 
 import (
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"strings"
 	"testing"
 

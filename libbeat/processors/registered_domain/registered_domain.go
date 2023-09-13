@@ -18,7 +18,7 @@
 package registered_domain
 
 import (
-	"encoding/json"
+	"github.com/goccy/go-json"
 	"strings"
 
 	"github.com/pkg/errors"

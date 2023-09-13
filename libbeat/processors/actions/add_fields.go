@@ -18,8 +18,8 @@
 package actions
 
 import (
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 
 	"github.com/elastic/beats/v7/libbeat/beat"
 	"github.com/elastic/beats/v7/libbeat/common"

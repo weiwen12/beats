@@ -6,8 +6,8 @@ package snapshot
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"strings"
 
 	"github.com/elastic/beats/v7/x-pack/elastic-agent/pkg/agent/errors"

@@ -21,8 +21,8 @@
 package kafka
 
 import (
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"testing"
 	"time"
 

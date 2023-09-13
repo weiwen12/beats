@@ -6,8 +6,8 @@ package composable
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"reflect"
 	"sort"
 	"strings"

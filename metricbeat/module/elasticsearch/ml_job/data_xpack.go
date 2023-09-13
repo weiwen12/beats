@@ -18,8 +18,8 @@
 package ml_job
 
 import (
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"time"
 
 	"github.com/joeshaw/multierror"

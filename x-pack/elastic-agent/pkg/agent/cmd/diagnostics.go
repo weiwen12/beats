@@ -7,9 +7,9 @@ package cmd
 import (
 	"archive/zip"
 	"context"
-	"encoding/json"
 	stderrors "errors"
 	"fmt"
+	"github.com/goccy/go-json"
 	"io"
 	"io/fs"
 	"os"

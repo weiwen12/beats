@@ -20,8 +20,8 @@ package dashboards
 import (
 	"bufio"
 	"bytes"
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"io"
 	"io/ioutil"
 	"os"

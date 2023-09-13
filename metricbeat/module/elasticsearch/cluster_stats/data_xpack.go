@@ -18,8 +18,8 @@
 package cluster_stats
 
 import (
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"hash/fnv"
 	"sort"
 	"strings"

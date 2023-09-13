@@ -6,8 +6,8 @@ package v2
 
 import (
 	"bytes"
-	"encoding/json"
 	"errors"
+	"github.com/goccy/go-json"
 
 	"github.com/elastic/beats/v7/libbeat/logp"
 )

@@ -5,7 +5,7 @@
 package decode_cef
 
 import (
-	"encoding/json"
+	"github.com/goccy/go-json"
 	"strconv"
 	"strings"
 

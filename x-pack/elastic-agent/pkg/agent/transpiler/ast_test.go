@@ -6,7 +6,7 @@ package transpiler
 
 import (
 	"bytes"
-	"encoding/json"
+	"github.com/goccy/go-json"
 	"reflect"
 	"testing"
 

@@ -6,8 +6,8 @@ package main
 
 import (
 	"bytes"
-	"encoding/json"
 	"flag"
+	"github.com/goccy/go-json"
 	"io"
 	"io/ioutil"
 	"log"

@@ -6,7 +6,7 @@ package o365audit
 
 import (
 	"context"
-	"encoding/json"
+	"github.com/goccy/go-json"
 	"time"
 
 	"github.com/Azure/go-autorest/autorest"

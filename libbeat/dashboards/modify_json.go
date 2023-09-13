@@ -19,8 +19,8 @@ package dashboards
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"regexp"
 
 	"github.com/elastic/beats/v7/libbeat/common"

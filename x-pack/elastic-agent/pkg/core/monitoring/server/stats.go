@@ -5,8 +5,8 @@
 package server
 
 import (
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"net/http"
 
 	"github.com/elastic/beats/v7/libbeat/monitoring"

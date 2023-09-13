@@ -7,8 +7,8 @@ package netflow
 import (
 	"bytes"
 	"encoding/binary"
-	"encoding/json"
 	"flag"
+	"github.com/goccy/go-json"
 	"io/ioutil"
 	"net"
 	"os"

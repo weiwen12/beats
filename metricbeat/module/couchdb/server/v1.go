@@ -18,10 +18,9 @@
 package server
 
 import (
-	"encoding/json"
-
 	"github.com/elastic/beats/v7/libbeat/common"
 	"github.com/elastic/beats/v7/metricbeat/mb"
+	"github.com/goccy/go-json"
 
 	"github.com/pkg/errors"
 )

@@ -18,8 +18,8 @@
 package query
 
 import (
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"math"
 	"strconv"
 	"time"

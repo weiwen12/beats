@@ -22,8 +22,8 @@ package kafka
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
+	"github.com/goccy/go-json"
 	"math/rand"
 	"os"
 	"strconv"

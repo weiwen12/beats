@@ -21,7 +21,7 @@
 package mlimporter
 
 import (
-	"encoding/json"
+	"github.com/goccy/go-json"
 	"io/ioutil"
 	"os"
 	"testing"

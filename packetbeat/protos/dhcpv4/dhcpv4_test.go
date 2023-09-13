@@ -18,7 +18,7 @@
 package dhcpv4
 
 import (
-	"encoding/json"
+	"github.com/goccy/go-json"
 	"net"
 	"testing"
 	"time"

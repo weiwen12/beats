@@ -20,8 +20,8 @@ package eslegclient
 import (
 	"bytes"
 	"context"
-	"encoding/json"
 	"errors"
+	"github.com/goccy/go-json"
 	"io"
 	"io/ioutil"
 	"net/http"
