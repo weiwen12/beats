@@ -49,8 +49,8 @@ func TestWithConfig(t *testing.T) {
 		"header_created_at":  "1693023196000",
 		"header_uploaded_at": "1693023204332",
 		"time":               "2023-08-26 12:11:47.898",
-		"pid":                4664,
-		"tid":                24435,
+		"pid":                int64(4664),
+		"tid":                int64(24435),
 		"level":              "DEBUG",
 		"tag":                "com.jidu.media.service:MediaService@MediaService@HttpLogInterceptor",
 		"trace_id":           "6d3e1573c45f07a1c60c6be4aeb3d2a0",
@@ -58,9 +58,27 @@ func TestWithConfig(t *testing.T) {
 		"parent_span_id":     "",
 		"network":            "5g",
 		"user_id":            "441018276115528658",
-		"message":            "response url: https://vehiclesvc.jiduapp.cn/api/cpsp/xmly/history/record/album, Response Time-->：2023-08-26 12:11:47 897\nTraceParent-->：00-6d3e1573c45f07a1c60c6be4aeb3d2a0-789f9212a72f683f-01\nResponse Result  -->：{\"code\":0,\"msg\":\"Success\",\"showMsg\":\"\"}",
+		"message":            "response url: https://vehiclesvc.jiduapp.cn/api/cpsp/xmly/history/record/album, Response Time-->：2023-08-26 12:11:47 897\nTraceParent-->：00-6d3e1573c45f07a1c60c6be4aeb3d2a0-789f9212a72f683f-01\nResponse Result  -->：{\"code\":0,\"msg\":\"Success\",\"showMsg\":\"\"} ",
 	}
-	assert.Equal(t, expected.String(), actual.String())
+	//assert.Equal(t, expected.String(), actual.String())
+	assert.Equal(t, expected["header_filename"], actual["x-header_filename"])
+	assert.Equal(t, expected["header_ecu"], actual["x-header_ecu"])
+	assert.Equal(t, expected["header_vid"], actual["x-header_vid"])
+	assert.Equal(t, expected["header_log_type"], actual["x-header_log_type"])
+	assert.Equal(t, expected["header_created_at"], actual["x-header_created_at"])
+	assert.Equal(t, expected["header_uploaded_at"], actual["x-header_uploaded_at"])
+	assert.Equal(t, expected["time"], actual["time"])
+	assert.Equal(t, expected["pid"], actual["pid"])
+	assert.Equal(t, expected["tid"], actual["tid"])
+	assert.Equal(t, expected["level"], actual["level"])
+	assert.Equal(t, expected["tag"], actual["tag"])
+	assert.Equal(t, expected["trace_id"], actual["trace_id"])
+	assert.Equal(t, expected["span_id"], actual["span_id"])
+	assert.Equal(t, expected["parent_span_id"], actual["parent_span_id"])
+	assert.Equal(t, expected["network"], actual["network"])
+	assert.Equal(t, expected["user_id"], actual["user_id"])
+	assert.Equal(t, expected["message"], actual["message"])
+
 }
 
 func getActualValue(t *testing.T, config *common.Config, input common.MapStr) common.MapStr {

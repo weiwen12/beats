@@ -18,15 +18,14 @@
 package parse_vehicle_trace2trace
 
 import (
-	"encoding/json"
-	"regexp"
-	"strconv"
-	"strings"
-
 	"github.com/elastic/beats/v7/libbeat/beat"
 	"github.com/elastic/beats/v7/libbeat/common"
 	"github.com/elastic/beats/v7/libbeat/logp"
 	"github.com/elastic/beats/v7/libbeat/processors"
+	"github.com/goccy/go-json"
+	"regexp"
+	"strconv"
+	"strings"
 )
 
 const (
@@ -120,108 +119,47 @@ func (p *parseVehicleTrace2trace) Run(event *beat.Event) (*beat.Event, error) {
 	items := strings.Split(path.(string), "@")
 
 	if len(items) == 6 {
-		_, err = event.PutValue("x-header_filename", items[0][strings.LastIndex(items[0], "/")+1:strings.LastIndex(items[0], ".")])
-		if err != nil {
-			return nil, makeErrComputeFingerprint(err)
-		}
-
-		_, err = event.PutValue("x-header_ecu", items[1])
-		if err != nil {
-			return nil, makeErrComputeFingerprint(err)
-		}
-
-		_, err = event.PutValue("x-header_vid", items[2])
-		if err != nil {
-			return nil, makeErrComputeFingerprint(err)
-		}
-
-		_, err = event.PutValue("x-header_log_type", items[3])
-		if err != nil {
-			return nil, makeErrComputeFingerprint(err)
-		}
-
-		_, err = event.PutValue("x-header_created_at", items[4])
-		if err != nil {
-			return nil, makeErrComputeFingerprint(err)
-		}
-
-		_, err = event.PutValue("x-header_uploaded_at", items[5])
-		if err != nil {
-			return nil, makeErrComputeFingerprint(err)
-		}
-
+		event.Fields["x-header_filename"] = items[0][strings.LastIndex(items[0], "/")+1 : strings.LastIndex(items[0], ".")]
+		event.Fields["x-header_ecu"] = items[1]
+		event.Fields["x-header_vid"] = items[2]
+		event.Fields["x-header_log_type"] = items[3]
+		event.Fields["x-header_created_at"] = items[4]
+		event.Fields["x-header_uploaded_at"] = items[5]
 	}
 	msgStr := msg.(string)
 
-	_, err = event.PutValue("message", msgStr)
-	if err != nil {
-		return nil, makeErrComputeFingerprint(err)
-	}
+	event.Fields["message"] = msgStr
 	lists := p.pattern.FindStringSubmatch(msgStr)
 
 	if len(lists) >= 11 && len(lists[6]) > 0 {
-		_, err = event.PutValue("time", lists[1])
-		if err != nil {
-			return nil, makeErrComputeFingerprint(err)
-		}
+		event.Fields["time"] = lists[1]
 		pid, err := strconv.ParseInt(lists[2], 10, 64)
 		if err != nil {
 			pid = 0
 		}
 
-		_, err = event.PutValue("pid", pid)
-		if err != nil {
-			return nil, makeErrComputeFingerprint(err)
-		}
+		event.Fields["pid"] = pid
 		tid, err := strconv.ParseInt(lists[3], 10, 64)
 		if err != nil {
 			tid = 0
 		}
-		_, err = event.PutValue("tid", tid)
-		if err != nil {
-			return nil, makeErrComputeFingerprint(err)
-		}
+		event.Fields["tid"] = tid
 		if value, ok := LevelMap[lists[4]]; ok {
-			_, err = event.PutValue("level", value)
+			event.Fields["level"] = value
 		} else {
-			_, err = event.PutValue("level", lists[4])
+			event.Fields["level"] = lists[4]
 		}
-		if err != nil {
-			return nil, makeErrComputeFingerprint(err)
-		}
-		_, err = event.PutValue("tag", lists[5])
-		if err != nil {
-			return nil, makeErrComputeFingerprint(err)
-		}
-		_, err = event.PutValue("trace_id", lists[6])
-		if err != nil {
-			return nil, makeErrComputeFingerprint(err)
-		}
-		_, err = event.PutValue("span_id", lists[7])
-		if err != nil {
-			return nil, makeErrComputeFingerprint(err)
-		}
-		_, err = event.PutValue("parent_span_id", lists[8])
-		if err != nil {
-			return nil, makeErrComputeFingerprint(err)
-		}
-		_, err = event.PutValue("network", lists[9])
-		if err != nil {
-			return nil, makeErrComputeFingerprint(err)
-		}
-		_, err = event.PutValue("user_id", lists[10])
-		if err != nil {
-			return nil, makeErrComputeFingerprint(err)
-		}
+		event.Fields["tag"] = lists[5]
+		event.Fields["trace_id"] = lists[6]
+		event.Fields["span_id"] = lists[7]
+		event.Fields["parent_span_id"] = lists[8]
+		event.Fields["network"] = lists[9]
+		event.Fields["user_id"] = lists[10]
 		if endIdx := strings.LastIndex(msgStr, "##MSG##"); endIdx > len(lists[0]) {
-			_, err = event.PutValue("message", msgStr[len(lists[0]):endIdx])
+			event.Fields["message"] = msgStr[len(lists[0]):endIdx]
 		} else {
-			_, err = event.PutValue("message", msgStr[len(lists[0]):])
+			event.Fields["message"] = msgStr[len(lists[0]):]
 		}
-		if err != nil {
-			return nil, makeErrComputeFingerprint(err)
-		}
-
 	}
 
 	return event, nil

@@ -198,6 +198,7 @@ require (
 require (
 	github.com/elastic/elastic-agent-libs v0.2.11
 	github.com/elastic/elastic-agent-system-metrics v0.4.4
+	github.com/goccy/go-json v0.10.2
 )
 
 require (
