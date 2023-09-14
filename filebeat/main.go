@@ -22,6 +22,7 @@ import (
 
 	"github.com/elastic/beats/v7/filebeat/cmd"
 	inputs "github.com/elastic/beats/v7/filebeat/input/default-inputs"
+	_ "net/http/pprof"
 )
 
 // The basic model of execution:
