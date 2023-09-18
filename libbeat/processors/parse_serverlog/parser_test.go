@@ -18,15 +18,17 @@
 package parse_serverlog
 
 import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+
 	"github.com/elastic/beats/v7/libbeat/beat"
 	"github.com/elastic/beats/v7/libbeat/common"
 	"github.com/elastic/beats/v7/libbeat/logp"
-	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 var (
-	defaultMessage = "{\"contents\":{\"content\":\"2023-09-18 11:32:58.511 ai-repair-common ai-repair-common-69685c846c-kr47m INFO [http-nio-8080-exec-1] com.jidu.postsale.config.LogAspect doAround [66] [4652dc92fb8240777ad468f1623aaaff] [f9567a128ed25419] 【智能维修】【响应日志】{\\\"code\\\":0,\\\"msg\\\":\\\"请求成功\\\"}##JIDU##{\"conts\":{\"cont\":\"123\"},\"ta\":{\"ip\":\"10.90.33.11\",\"name\":\"10.90.33.11\"},\"time-test\":1695007978}##JIDU##\"},\"tags\":{\"container.image.name\":\"docker.jidudev.com/tech/ai-repair-common:s.95f66.57.1904\",\"container.ip\":\"10.90.44.137\",\"container.name\":\"ai-repair-common\",\"host.ip\":\"10.90.162.80\",\"host.name\":\"log-collector-6s7vk\",\"k8s.namespace.name\":\"develop\",\"k8s.node.ip\":\"10.90.33.11\",\"k8s.node.name\":\"10.90.33.11\",\"k8s.pod.name\":\"ai-repair-common-69685c846c-kr47m\",\"k8s.pod.uid\":\"fc75c40f-f5b1-4e64-8ef9-0557c7ceca82\",\"log.file.path\":\"/app/logs/ai-repair-common/serverlog.ai-repair-common-69685c846c-kr47m.log\"},\"time\":1695007978}"
+	defaultMessage = `{"contents":{"content":"2023-09-18 11:32:58.511 ai-repair-common ai-repair-common-69685c846c-kr47m INFO [http-nio-8080-exec-1] com.jidu.postsale.config.LogAspect doAround [66] [4652dc92fb8240777ad468f1623aaaff] [f9567a128ed25419] 【智能维修】【响应日志】{\"code\":0,\"msg\":\"请求成功\"}##JIDU##{\"conts\":{\"cont\":\"123\"},\"ta\":{\"ip\":\"10.90.33.11\",\"name\":\"10.90.33.11\"},\"time-test\":1695007978}##JIDU##"},"tags":{"container.image.name":"docker.jidudev.com/tech/ai-repair-common:s.95f66.57.1904","container.ip":"10.90.44.137","container.name":"ai-repair-common","host.ip":"10.90.162.80","host.name":"log-collector-6s7vk","k8s.namespace.name":"develop","k8s.node.ip":"10.90.33.11","k8s.node.name":"10.90.33.11","k8s.pod.name":"ai-repair-common-69685c846c-kr47m","k8s.pod.uid":"fc75c40f-f5b1-4e64-8ef9-0557c7ceca82","log.file.path":"/app/logs/ai-repair-common/serverlog.ai-repair-common-69685c846c-kr47m.log"},"time":1695007978}`
 )
 
 func TestWithConfig(t *testing.T) {
@@ -43,7 +45,7 @@ func TestWithConfig(t *testing.T) {
 	actual := getActualValue(t, testConfig, input)
 	expected := common.MapStr{
 		"source_tags":     `{"container.image.name":"docker.jidudev.com/tech/ai-repair-common:s.95f66.57.1904","container.ip":"10.90.44.137","container.name":"ai-repair-common","host.ip":"10.90.162.80","host.name":"log-collector-6s7vk","k8s.namespace.name":"develop","k8s.node.ip":"10.90.33.11","k8s.node.name":"10.90.33.11","k8s.pod.name":"ai-repair-common-69685c846c-kr47m","k8s.pod.uid":"fc75c40f-f5b1-4e64-8ef9-0557c7ceca82","log.file.path":"/app/logs/ai-repair-common/serverlog.ai-repair-common-69685c846c-kr47m.log"}`,
-		"source_time":     1695007978,
+		"source_time":     int64(1695007978),
 		"logtime":         "2023-09-18 11:32:58.511",
 		"jiduservicename": "ai-repair-common",
 		"hostname":        "ai-repair-common-69685c846c-kr47m",
@@ -51,14 +53,14 @@ func TestWithConfig(t *testing.T) {
 		"thread":          "http-nio-8080-exec-1",
 		"class":           "com.jidu.postsale.config.LogAspect",
 		"method":          "doAround",
-		"line":            "66",
+		"line":            int64(66),
 		"trace_id":        "4652dc92fb8240777ad468f1623aaaff",
 		"span_id":         "f9567a128ed25419",
 		"message":         "##JIDU##{\"conts\":{\"cont\":\"123\"},\"ta\":{\"ip\":\"10.90.33.11\",\"name\":\"10.90.33.11\"},\"time-test\":1695007978}##JIDU##",
-		"conts.cont":      123,
+		"conts.cont":      "123",
 		"ta.name":         "10.90.33.11",
 		"ta.ip":           "10.90.33.11",
-		"time-test":       1695007978,
+		"time-test":       int64(1695007978),
 	}
 	//assert.Equal(t, expected.String(), actual.String())
 	assert.Equal(t, expected["source_tags"], actual["source_tags"])
@@ -73,7 +75,7 @@ func TestWithConfig(t *testing.T) {
 	assert.Equal(t, expected["line"], actual["line"])
 	assert.Equal(t, expected["trace_id"], actual["trace_id"])
 	assert.Equal(t, expected["span_id"], actual["span_id"])
-	assert.Equal(t, expected["message"], actual["message"])
+	assert.Equal(t, expected["message"], actual["msg"])
 	assert.Equal(t, expected["conts.cont"], actual["conts.cont"])
 	assert.Equal(t, expected["ta.name"], actual["ta.name"])
 	assert.Equal(t, expected["ta.ip"], actual["ta.ip"])

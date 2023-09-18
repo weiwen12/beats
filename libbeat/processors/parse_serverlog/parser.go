@@ -18,15 +18,17 @@
 package parse_serverlog
 
 import (
-	"github.com/elastic/beats/v7/libbeat/beat"
-	"github.com/elastic/beats/v7/libbeat/common"
-	"github.com/elastic/beats/v7/libbeat/logp"
-	"github.com/elastic/beats/v7/libbeat/processors"
-	"github.com/goccy/go-json"
 	"reflect"
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/goccy/go-json"
+
+	"github.com/elastic/beats/v7/libbeat/beat"
+	"github.com/elastic/beats/v7/libbeat/common"
+	"github.com/elastic/beats/v7/libbeat/logp"
+	"github.com/elastic/beats/v7/libbeat/processors"
 )
 
 const (
@@ -102,10 +104,10 @@ func (p *parseServerlog) Run(event *beat.Event) (*beat.Event, error) {
 	}
 
 	jiduservicename := strings.Replace(items[2], ",", "", 1)
-	if jiduservicenamePattern.MatchString(jiduservicename) {
+	if !jiduservicenamePattern.MatchString(jiduservicename) {
 		return nil, err
 	}
-	event.Fields["jiduservicename"] = msgObj["jiduservicename"]
+	event.Fields["jiduservicename"] = jiduservicename
 
 	//filter benchmark log
 	if items[9] != "" && benchmarkTraceIdPattern.MatchString(p.trim(items[9])) {

@@ -18,15 +18,17 @@
 package parse_vehicle_trace2trace
 
 import (
+	"regexp"
+	"strconv"
+	"strings"
+
+	"github.com/goccy/go-json"
+
 	"github.com/elastic/beats/v7/libbeat/beat"
 	"github.com/elastic/beats/v7/libbeat/common"
 	"github.com/elastic/beats/v7/libbeat/logp"
 	"github.com/elastic/beats/v7/libbeat/processors"
 	"github.com/elastic/beats/v7/libbeat/processors/parse_common"
-	"github.com/goccy/go-json"
-	"regexp"
-	"strconv"
-	"strings"
 )
 
 const (
