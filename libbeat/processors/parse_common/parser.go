@@ -18,21 +18,16 @@
 package parse_common
 
 import (
-	"github.com/goccy/go-json"
-	"regexp"
-	"strconv"
-	"strings"
-
 	"github.com/elastic/beats/v7/libbeat/beat"
 	"github.com/elastic/beats/v7/libbeat/common"
 	"github.com/elastic/beats/v7/libbeat/logp"
 	"github.com/elastic/beats/v7/libbeat/processors"
+	"github.com/goccy/go-json"
 )
 
 const (
-	procName   = "parse_vehicle_trace2trace"
-	logName    = "processor." + procName
-	patternStr = "^(\\d{4}\\-\\d{2}\\-\\d{2}\\s\\d{2}:\\d{2}:\\d{2}\\.\\d{3})\\s+(\\d+)\\s+(\\d+)\\s+([a-zA-Z]+)\\s+(.*):\\s*##MSG##\\s*\\[(\\w*)\\]\\s*\\[(\\w*)\\]\\s*\\[(\\w*)\\]\\s*\\[([^\\[\\]]*)\\]\\s*\\[([^\\[\\]]*)\\]\\s+"
+	procName = "parse_common"
+	logName  = "processor." + procName
 )
 
 var (
@@ -52,9 +47,8 @@ func init() {
 }
 
 type parseVehicleTrace2trace struct {
-	config  Config
-	logger  *logp.Logger
-	pattern *regexp.Regexp
+	config Config
+	logger *logp.Logger
 }
 
 // NewParseVehicleTrace2trace constructs a new parse_vehicle_trace2trace processor.
@@ -66,14 +60,9 @@ func NewParseVehicleTrace2trace(cfg *common.Config) (processors.Processor, error
 
 	logger := logp.NewLogger(logName)
 
-	pattern, err := regexp.Compile(patternStr)
-	if err != nil {
-		return nil, err
-	}
 	p := &parseVehicleTrace2trace{
-		config:  config,
-		logger:  logger,
-		pattern: pattern,
+		config: config,
+		logger: logger,
 	}
 
 	return p, nil
@@ -82,140 +71,6 @@ func NewParseVehicleTrace2trace(cfg *common.Config) (processors.Processor, error
 // Run parse log
 func (p *parseVehicleTrace2trace) Run(event *beat.Event) (*beat.Event, error) {
 	//get the content of log
-	message, err := event.GetValue(p.config.Field)
-	if err != nil {
-		if p.config.IgnoreMissing {
-			return event, nil
-		}
-		return nil, makeErrMissingField(p.config.Field, err)
-	}
-
-	var msgObj common.MapStr
-	err = json.Unmarshal([]byte(message.(string)), &msgObj)
-	if err != nil {
-		return nil, err
-	}
-	msg, err := msgObj.GetValue("message")
-	if err != nil {
-		return nil, err
-	}
-
-	path, err := msgObj.GetValue("log.file.path")
-	if err != nil {
-		if p.config.IgnoreMissing {
-			return event, nil
-		}
-		return nil, makeErrMissingField(p.config.Field, err)
-	}
-
-	//drop origin field
-	if p.config.DropOrigin {
-		err := event.Delete(p.config.Field)
-		if err != nil {
-			p.logger.Warnf("drop event field err: %v", err)
-		}
-	}
-
-	/* parse */
-	items := strings.Split(path.(string), "@")
-
-	if len(items) == 6 {
-		_, err = event.PutValue("x-header_filename", items[0][strings.LastIndex(items[0], "/")+1:strings.LastIndex(items[0], ".")])
-		if err != nil {
-			return nil, makeErrComputeFingerprint(err)
-		}
-
-		_, err = event.PutValue("x-header_ecu", items[1])
-		if err != nil {
-			return nil, makeErrComputeFingerprint(err)
-		}
-
-		_, err = event.PutValue("x-header_vid", items[2])
-		if err != nil {
-			return nil, makeErrComputeFingerprint(err)
-		}
-
-		_, err = event.PutValue("x-header_log_type", items[3])
-		if err != nil {
-			return nil, makeErrComputeFingerprint(err)
-		}
-
-		_, err = event.PutValue("x-header_created_at", items[4])
-		if err != nil {
-			return nil, makeErrComputeFingerprint(err)
-		}
-
-		_, err = event.PutValue("x-header_uploaded_at", items[5])
-		if err != nil {
-			return nil, makeErrComputeFingerprint(err)
-		}
-
-	}
-	msgStr := msg.(string)
-	lists := p.pattern.FindStringSubmatch(msgStr)
-	if len(lists) >= 11 && len(lists[6]) > 0 {
-		_, err = event.PutValue("time", lists[1])
-		if err != nil {
-			return nil, makeErrComputeFingerprint(err)
-		}
-		pid, err := strconv.ParseInt(lists[2], 10, 64)
-		if err != nil {
-			pid = 0
-		}
-		_, err = event.PutValue("pid", pid)
-		if err != nil {
-			return nil, makeErrComputeFingerprint(err)
-		}
-		tid, err := strconv.ParseInt(lists[3], 10, 64)
-		if err != nil {
-			tid = 0
-		}
-		_, err = event.PutValue("tid", tid)
-		if err != nil {
-			return nil, makeErrComputeFingerprint(err)
-		}
-		if value, ok := LevelMap[lists[4]]; ok {
-			_, err = event.PutValue("level", value)
-		} else {
-			_, err = event.PutValue("level", lists[4])
-		}
-		if err != nil {
-			return nil, makeErrComputeFingerprint(err)
-		}
-		_, err = event.PutValue("tag", lists[5])
-		if err != nil {
-			return nil, makeErrComputeFingerprint(err)
-		}
-		_, err = event.PutValue("trace_id", lists[6])
-		if err != nil {
-			return nil, makeErrComputeFingerprint(err)
-		}
-		_, err = event.PutValue("span_id", lists[7])
-		if err != nil {
-			return nil, makeErrComputeFingerprint(err)
-		}
-		_, err = event.PutValue("parent_span_id", lists[8])
-		if err != nil {
-			return nil, makeErrComputeFingerprint(err)
-		}
-		_, err = event.PutValue("network", lists[9])
-		if err != nil {
-			return nil, makeErrComputeFingerprint(err)
-		}
-		_, err = event.PutValue("user_id", lists[10])
-		if err != nil {
-			return nil, makeErrComputeFingerprint(err)
-		}
-		if endIdx := strings.LastIndex(msgStr, "##MSG##"); endIdx > len(lists[0]) {
-			_, err = event.PutValue("message", msgStr[len(lists[0]):endIdx])
-		} else {
-			_, err = event.PutValue("message", msgStr[len(lists[0]):])
-		}
-		if err != nil {
-			return nil, makeErrComputeFingerprint(err)
-		}
-
-	}
 
 	return event, nil
 }

@@ -15,11 +15,12 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package parse_vehicle_trace2trace
+package parse_serverlog
 
 // Config for parse_parse_vehicle_trace2trace processor.
 type Config struct {
 	Field           string `config:"field"`            // log message field
+	TimeField       string `config:"time_field"`       // specified the time field
 	IgnoreMissing   bool   `config:"ignore_missing"`   // Skip field when From field is missing.
 	IgnoreMalformed bool   `config:"ignore_malformed"` // Skip log when From log is incorrect.
 	DropOrigin      bool   `config:"drop_origin"`      // Drop the origin field
@@ -28,6 +29,7 @@ type Config struct {
 func defaultConfig() Config {
 	return Config{
 		Field:           "message",
+		TimeField:       "logtime",
 		IgnoreMissing:   true,
 		IgnoreMalformed: true,
 		DropOrigin:      true,
