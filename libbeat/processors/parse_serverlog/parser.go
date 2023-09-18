@@ -132,7 +132,7 @@ func (p *parseServerlog) Run(event *beat.Event) (*beat.Event, error) {
 		event.Fields["trace_id"] = p.trim(items[9])
 		event.Fields["span_id"] = p.trim(items[10])
 		if idx >= 0 {
-			event.Fields["message"] = msgStr[idx:]
+			event.Fields["msg"] = msgStr[idx:]
 		}
 	}
 
