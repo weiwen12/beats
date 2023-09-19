@@ -18,31 +18,23 @@
 package parse_vehicle_trace2trace
 
 import (
+	"regexp"
+	"strconv"
+	"strings"
+
+	"github.com/goccy/go-json"
+
 	"github.com/elastic/beats/v7/libbeat/beat"
 	"github.com/elastic/beats/v7/libbeat/common"
 	"github.com/elastic/beats/v7/libbeat/logp"
 	"github.com/elastic/beats/v7/libbeat/processors"
-	"github.com/goccy/go-json"
-	"regexp"
-	"strconv"
-	"strings"
+	"github.com/elastic/beats/v7/libbeat/processors/parse_common"
 )
 
 const (
 	procName   = "parse_vehicle_trace2trace"
 	logName    = "processor." + procName
 	patternStr = "^(\\d{4}\\-\\d{2}\\-\\d{2}\\s\\d{2}:\\d{2}:\\d{2}\\.\\d{3})\\s+(\\d+)\\s+(\\d+)\\s+([a-zA-Z]+)\\s+(.*):\\s*##MSG##\\s*\\[(\\w*)\\]\\s*\\[(\\w*)\\]\\s*\\[(\\w*)\\]\\s*\\[([^\\[\\]]*)\\]\\s*\\[([^\\[\\]]*)\\]\\s+"
-)
-
-var (
-	LevelMap = map[string]string{
-		"V": "VERBOSE",
-		"D": "DEBUG",
-		"I": "INFO",
-		"W": "WARN",
-		"E": "ERROR",
-		"F": "FATAL",
-	}
 )
 
 func init() {
@@ -78,6 +70,7 @@ func NewParseVehicleTrace2trace(cfg *common.Config) (processors.Processor, error
 	return p, nil
 }
 
+// todo  拆成多个processor
 // Run parse log
 func (p *parseVehicleTrace2trace) Run(event *beat.Event) (*beat.Event, error) {
 	//get the content of log
@@ -104,7 +97,7 @@ func (p *parseVehicleTrace2trace) Run(event *beat.Event) (*beat.Event, error) {
 		if p.config.IgnoreMissing {
 			return event, nil
 		}
-		return nil, makeErrMissingField(p.config.Field, err)
+		return nil, makeErrMissingField("log.file.path", err)
 	}
 
 	//drop origin field
@@ -144,7 +137,7 @@ func (p *parseVehicleTrace2trace) Run(event *beat.Event) (*beat.Event, error) {
 			tid = 0
 		}
 		event.Fields["tid"] = tid
-		if value, ok := LevelMap[lists[4]]; ok {
+		if value, ok := parse_common.LevelMap[lists[4]]; ok {
 			event.Fields["level"] = value
 		} else {
 			event.Fields["level"] = lists[4]
