@@ -75,7 +75,7 @@ func TestWithConfig(t *testing.T) {
 	assert.Equal(t, expected["line"], actual["line"])
 	assert.Equal(t, expected["trace_id"], actual["trace_id"])
 	assert.Equal(t, expected["span_id"], actual["span_id"])
-	assert.Equal(t, expected["message"], actual["msg"])
+	assert.Equal(t, expected["message"], actual["message"])
 	assert.Equal(t, expected["conts.cont"], actual["conts.cont"])
 	assert.Equal(t, expected["ta.name"], actual["ta.name"])
 	assert.Equal(t, expected["ta.ip"], actual["ta.ip"])

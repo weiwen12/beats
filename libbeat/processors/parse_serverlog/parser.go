@@ -18,7 +18,6 @@
 package parse_serverlog
 
 import (
-	"reflect"
 	"regexp"
 	"strconv"
 	"strings"
@@ -132,7 +131,7 @@ func (p *parseServerlog) Run(event *beat.Event) (*beat.Event, error) {
 		event.Fields["trace_id"] = p.trim(items[9])
 		event.Fields["span_id"] = p.trim(items[10])
 		if idx >= 0 {
-			event.Fields["msg"] = msgStr[idx:]
+			event.Fields["message"] = msgStr[idx:]
 		}
 	}
 
@@ -144,14 +143,9 @@ func (p *parseServerlog) Run(event *beat.Event) (*beat.Event, error) {
 		if err != nil {
 			event.Fields["json_error"] = err
 		} else {
-			Recur("", obj, event)
-		}
-	}
-	//drop origin field
-	if p.config.DropOrigin {
-		err := event.Delete(p.config.Field)
-		if err != nil {
-			p.logger.Warnf("drop event field err: %v", err)
+			for s, i := range obj {
+				event.Fields[s] = i
+			}
 		}
 	}
 
@@ -163,26 +157,6 @@ func (p *parseServerlog) trim(s string) string {
 		return s
 	}
 	return s[1 : len(s)-1]
-}
-
-// recur 遍历map[string]interface{}
-func Recur(key string, msg map[string]interface{}, event *beat.Event) {
-	for k, v := range msg {
-		if reflect.TypeOf(v).Kind() == reflect.Map {
-			if len(key) < 1 {
-				Recur(k, v.(map[string]interface{}), event)
-			} else {
-				Recur(key+"."+k, v.(map[string]interface{}), event)
-			}
-
-		} else {
-			if len(key) < 1 {
-				event.Fields[k] = v
-			} else {
-				event.Fields[key+"."+k] = v
-			}
-		}
-	}
 }
 
 func (p *parseServerlog) String() string {
